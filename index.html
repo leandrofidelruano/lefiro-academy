@@ -4,43 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Ruano Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+    <title>CS2 DROPS</title>
 </head>
 <body>
-    
 
-
-
-
-
-    <h1>Counter Strike 2 <br> Countdown</h1>
-    <div id="countdown-container">
-        <div id="countdown"></div>
-        <div id="labels">
-          <div>Días</div>
-          <div>Horas</div>
-          <div>Minutos</div>
-          <div>Segundos</div>
-        </div>
+  <h1>Counter Strike 2 <br> countdown:</h1>
+  <div id="countdown-container">
+      <div id="countdown"></div>
+      <div id="labels">
+        <div>Días</div>
+        <div>Horas</div>
+        <div>Minutos</div>
+        <div>Segundos</div>
       </div>
-      <div id="progress-bar-container">
-          <div id="progress-bar">
-            <div id="progress-bar-fill"></div>
-          </div>
+  </div>
+  <div id="progress-bar-container">
+      <div id="progress-bar">
+        <div id="progress-bar-fill"></div>
       </div>
-
-      <script>
-        function getNextTuesday() {
-          const now = new Date();
-          const daysUntilNextTuesday = (2 + 7 - now.getDay()) % 7; // 2 es el código de día para martes
+  </div>
+  <div id="percentage"></div>
+  <div id="description">
+    <i class="fas fa-info-circle"></i> 
+    <p>Cuando la barra se complete, los drops semanales <br> estarán disponisbles nuevamente.<p>
+  </div>
+    <script>
+      function getNextTuesday() {
+        const now = new Date();
+        const daysUntilNextTuesday = (2 + 7 - now.getDay()) % 7; // 2 es el código de día martes
     
           const nextTuesday = new Date(now);
           nextTuesday.setDate(now.getDate() + daysUntilNextTuesday);
-          nextTuesday.setHours(23, 0, 0, 0); // Establecer a las 23:00hs
+          nextTuesday.setHours(23, 0, 0, 0); // 23:00hs
     
           return nextTuesday;
         }
-    
+        
         function calculateTimeRemaining(targetDate) {
           const now = new Date().getTime();
           const targetTime = targetDate.getTime();
@@ -54,7 +55,7 @@
               seconds: 0
             };
           }
-    
+          
           const days = Math.floor(difference / (1000 * 60 * 60 * 24));
           const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
@@ -67,7 +68,7 @@
             seconds
           };
         }
-    
+        
         function updateCountdown() {
             const targetDate = getNextTuesday();
             const timeRemaining = calculateTimeRemaining(targetDate);
@@ -80,12 +81,13 @@
             const totalSeconds = timeRemaining.days * 24 * 60 * 60 + timeRemaining.hours * 60 * 60 + timeRemaining.minutes * 60 + timeRemaining.seconds;
             const progressPercentage = (totalSeconds / (7 * 24 * 60 * 60)) * 100; // 7 días en segundos
             progressBarFill.style.width = `${progressPercentage}%`;
+            const percentage = Math.min(100, Math.floor(progressPercentage));
+            document.getElementById("percentage").innerHTML = `${percentage}%`;
 
             if (timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds === 0) {
                 clearInterval(countdownInterval);
                 countdownElement.innerText = "¡El tiempo ha expirado!";
             }
-          
         }
 
         updateCountdown();
